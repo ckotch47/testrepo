@@ -27,7 +27,20 @@ jobs:
     pytest:
       needs: pylint
       name: pytest
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          python-version: [ "3.10" ]
       steps:
-      - name: Run test
-        run: |
-          python -m pytest
+        - uses: actions/checkout@v3
+        - name: Install Python dependencies
+          uses: py-actions/py-dependency-install@v4
+          with:
+            path: "package.txt"
+        - name: Set up Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v3
+          with:
+            python-version: ${{ matrix.python-version }}
+        - name: Run Pytest
+          run: |
+            python -m pytest
