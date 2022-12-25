@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    my_first_job:
+    pylint:
       name: pylint
       runs-on: ubuntu-latest
       strategy:
@@ -24,7 +24,8 @@ jobs:
         run: |
           pylint src/*.py
 
-    my_second_job:
+    pytest:
+      needs: pylint
       name: pytest
       steps:
       - name: Run test
