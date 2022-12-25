@@ -2,15 +2,36 @@ name: Pylint
 
 on: [push]
 
-jobs:
+pylint:
   build:
-    pylint:
-      name: pylint
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          python-version: ["3.10"]
-      steps:
+    name: pylint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Python dependencies
+      uses: py-actions/py-dependency-install@v4
+      with:
+        path: "package.txt"
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Analysing the code with pylint
+      run: |
+        pylint src/*.py
+
+pytest:
+  needs: pylint
+  name: pytest
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.10" ]
+    steps:
       - uses: actions/checkout@v3
       - name: Install Python dependencies
         uses: py-actions/py-dependency-install@v4
@@ -20,27 +41,6 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Analysing the code with pylint
+      - name: Run Pytest
         run: |
-          pylint src/*.py
-
-    pytest:
-      needs: pylint
-      name: pytest
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          python-version: [ "3.10" ]
-      steps:
-        - uses: actions/checkout@v3
-        - name: Install Python dependencies
-          uses: py-actions/py-dependency-install@v4
-          with:
-            path: "package.txt"
-        - name: Set up Python ${{ matrix.python-version }}
-          uses: actions/setup-python@v3
-          with:
-            python-version: ${{ matrix.python-version }}
-        - name: Run Pytest
-          run: |
-            python -m pytest
+          python -m pytest
