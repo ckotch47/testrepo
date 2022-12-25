@@ -25,7 +25,7 @@ jobs:
           pylint src/*.py
 
   job2:
-    needs: pylint
+    name: pytest
     build:
       runs-on: ubuntu-latest
       strategy:
