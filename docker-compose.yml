@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  test_back:
+    build: .
+    container_name: test_back
+    command: uvicorn src.main:app --host 0.0.0.0 --port 5005
+    volumes:
+      - ./src:/src
+    ports:
+      - ${backend_port}:5005
+    networks:
+      test_repo-net:
+        ipv4_address: 172.16.237.33
+
+networks:
+  test_repo-net:
+    name: test_repo-net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.237.0/24
+
+
+
+
