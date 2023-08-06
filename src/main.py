@@ -16,6 +16,12 @@ async def root():
     """
     return {"message": "Hello World"}
 
+
 @app.get('/auto')
 async def return_message():
     return '<h1>this autodeploy</h1>'
+
+
+@app.get('/auto-test')
+async def return_message():
+    return '<h1>this autodeploy test</h1>'
