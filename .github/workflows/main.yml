@@ -1,9 +1,12 @@
 name: deploy
 
-on: [push]
+on:
+  pull_request:
+    types: [ closed ]
 
 jobs:
-  pylint:
+  up-serve:
+    if: github.event.pull_request.merged == true
     name: up
     runs-on: self-hosted
     steps:
