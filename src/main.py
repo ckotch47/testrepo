@@ -38,3 +38,7 @@ async def return_message():
 @app.get('/auto-test-3')
 async def return_message():
     return '<h1>this autodeploy test -3 </h1>'
+
+@app.get('/auto-test-4')
+async def return_message():
+    return '<h1>this autodeploy test -3 </h1>'
